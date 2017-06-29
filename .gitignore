@@ -1,0 +1,6 @@
+/secret/keys.js
+/secret/mailer.key
+/secret/mailer.chained.crt
+/data/data.js
+.idea
+/node_modules

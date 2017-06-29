@@ -1,0 +1,50 @@
+{
+  "name": "mailer-api",
+  "description": "Server side mailer for static websites with Google Recaptcha integrated.",
+  "version": "0.0.1",
+  "author": {
+    "name": "G'Day Digital Nomads",
+    "email": "jordan@gdaydigitalnomads",
+    "url": "http://www.gdaydigitalnomads.com"
+  },
+  "homepage": "http://www.gdaydigitalnomads.com",
+  "bugs": {
+    "url": "https://github.com/gdaydigitalnomads/mailer-api/issues"
+  },
+  "license": "MIT",
+  "main": "server/index.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gdaydigitalnomads/mailer-api.git"
+  },
+  "dependencies": {
+    "better-queue": "~3.8.5",
+    "body-parser": "~1.17.1",
+    "compression": "~1.0.9",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "downgrade": "~1.0.0",
+    "express": "~4.15.2",
+    "express-recaptcha": "~2.1.0",
+    "jade": "~1.11.0",
+    "morgan": "~1.8.1",
+    "nodemailer": "~4.0.1",
+    "run-parallel": "^1.0.0",
+    "serve-favicon": "~2.4.2",
+    "unlimited": "~1.2.0"
+  },
+  "keywords": [
+    "static website mailer",
+    "google recaptcha"
+  ],
+  "bin": {
+    "mailer-api": "server/index.js"
+  },
+  "scripts": {
+    "start": "node server"
+  }
+}
+
+
+
