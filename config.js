@@ -1,4 +1,5 @@
 // Port settings for dev and prod
+exports.isProd = process.env.NODE_ENV === 'production'
 exports.ports = {
   http: exports.isProd ? 80 : 9100,
   https: exports.isProd ? 80 : 9100

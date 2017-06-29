@@ -54,6 +54,7 @@ if (httpsServer) {
 
 parallel(tasks, function (err) {
     if (err) throw err
+    debug('In %s mode', config.env)
     debug('listening on port %s', JSON.stringify(config.ports))
     downgrade()
 })
@@ -97,5 +98,6 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
+  console.log('In %s mode', process.env.NODE_ENV)
   console.log('Listening on ' + bind);
 }
