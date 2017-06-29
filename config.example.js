@@ -6,14 +6,14 @@ exports.ports = {
 
 // Google Site and Private keys for captcha
 exports.keys = {
-    private:  '6LfoSycUAAAAABnRy6btOHaUGqRTNG1aUAJuxjkB',
-    public: '6LfoSycUAAAAAPJ-YaW7iR0vxjmusqbVNkVpTust'
+    private:  '',
+    public: ''
 }
 
 // Destination for forms to email
 exports.configs = {
-    dev : {domain: 'local.gdaydigitalnomads.com', toAddress: 'jordan@thetradingbox.com', fromAddress: 'jordan@thetradingbox.com', from: 'Jordan Rancie'},
-    production : { domain: 'www.gdaydigitalnomads.com', toAddress: 'jordan@thetradingbox.com', fromAddress: 'jordan@thetradingbox.com', from: 'Jordan Rancie'}
+    dev : {domain: 'local.example.com', toAddress: 'test@example.com', fromAddress: 'test@example.com', from: 'My Name'},
+    production : { domain: 'www.example.com', toAddress: 'test@texample.com', fromAddress: 'test@example.com', from: 'My Name'}
 }
 exports.env = (process.env.NODE_ENV === 'production') ? exports.configs.production : exports.configs.dev
 
@@ -23,7 +23,7 @@ exports.poolConfig = {
     port: 465,
     secure: true, // use TLS
     auth: {
-        user: 'jordan@thetradingbox.com',
-        pass: 'tbfohxegvqcpbaof'
+        user: 'me@gmail.com',
+        pass: 'password'
     }
 };
