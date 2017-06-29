@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var app = require('../app/app');
-var debug = require('debug')('astatic-api:server');
+var debug = require('debug')('mailer-api:server');
 var downgrade = require('downgrade')
 var http = require('http');
 var parallel = require('run-parallel')
@@ -14,7 +14,6 @@ var config = require('../config')
 
 var secret, secretKey, secretCert
 try {
-    secret = require('../secret')
     secretKey = fs.readFileSync(path.join(__dirname, '../secret/mailer.key'))
     secretCert = fs.readFileSync(path.join(__dirname, '../secret/mailer.chained.crt'))
 } catch (err) {
@@ -43,13 +42,13 @@ if (httpsServer) {
 
 var tasks = [
     function (cb) {
-        server.listen(config.ports.http, config.host, cb)
+        server.listen(config.ports.http, cb)
     }
 ]
 
 if (httpsServer) {
     tasks.push(function (cb) {
-        httpsServer.listen(config.ports.https, config.host, cb)
+        httpsServer.listen(config.ports.https, cb)
     })
 }
 

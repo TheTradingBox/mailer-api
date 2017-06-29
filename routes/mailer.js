@@ -3,73 +3,44 @@ var router = express.Router();
 var nodemailer = require('nodemailer');
 var Queue = require('better-queue');
 var recaptcha = require('express-recaptcha');
+var config = require('../config')
 
-var data = require('../data/data');
-var keys = require('../secret/keys');
-
-recaptcha.init(keys.keys.public, keys.keys.private);
-
-var poolConfig = {
-    pool: true,
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // use TLS
-    auth: {
-        user: 'jordan@thetradingbox.com',
-        pass: 'tbfohxegvqcpbaof'
-    }
-};
-
-var transporter = nodemailer.createTransport(poolConfig);
+recaptcha.init(config.keys.public, config.keys.private);
+var env = config.env
+var transporter = nodemailer.createTransport(config.poolConfig);
 var queue = new Queue(function (input, cb) {
     transporter.sendMail(input, cb);
 })
 
-
-router.route('/:appName').post(function (req, res) {
-    res.header('Access-Control-Allow-Origin', '*')
-    var app = req.params.appName;
-    if (app && data.data[app]) {
-        verify(req, res, sendmail, data.data[app])
-    } else {
-        res.write('{"success": false}')
-        res.status(409)
-        res.end()
-    }
-
-})
-
-var verify = function(req, res, cb, app) {
+router.route('*').post(function (req, res) {
     recaptcha.verify(req, function(error) {
         if (!error) {
             console.log('Contact form submitted from ' + '. Successful captcha received. Sending mail now. ')
-            cb(req, res, app)
+            res.write('{"success": true}')
+            res.status(200)
+            res.end()
+            sendmail(req, res)
         } else {
             console.log('Contact form submitted from ' + '. Invalid captcha received. ignoring... ')
-            console.log('error code: ' + error)
-            return false;
+            res.write('{"success": false}')
+            res.status(409)
+            res.end()
         }
     })
-}
+})
 
-var sendmail = function(req, res, app) {
+var sendmail = function(req, res) {
     // Create the Email
-
-    res.write('{"success": true}')
-    res.status(401)
-    res.end()
-
-    var text = 'You received a new message from ' + app.domain + "\n\n";
+    var text = 'You received a new message from ' + env.domain + "\n\n";
 
     Object.keys(req.body).forEach(function(item) {
         text += item + ': ' + req.body[item] + "\n\n"
     });
-    //text += item + ': ' + req + "\n\n"
 
     var mail = {
-        from: '"' + app.from +'" <' + app.fromAddress + '>',
-        to: app.toAddress,
-        subject: 'New Web Enquiry from ' + app.domain + ': ' + (req.body.subject ? req.body.subject : '') , // Subject line
+        from: '"' + env.from +'" <' + env.fromAddress + '>',
+        to: env.toAddress,
+        subject: 'New Web Enquiry from ' + env.domain + ': ' + (req.body.subject ? req.body.subject : '') , // Subject line
         text: text
     };
 

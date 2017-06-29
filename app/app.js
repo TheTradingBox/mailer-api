@@ -19,9 +19,8 @@ app.set('views', path.join(__dirname, '../views'));
 app.set('x-powered-by', false)
 app.set('view engine', 'jade');
 app.engine('jade', jade.renderFile)
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
+app.use(favicon(path.join(__dirname, '../public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,13 +29,15 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(compress())
 app.use(function (req, res, next) {
     // Force SSL
-    if (config.isProd && req.protocol !== 'https') {
-        return res.redirect('https://' + req.hostname + req.url)
-    }
+    //if (httpsServer && req.protocol !== 'https') {
+    //    return res.redirect('https://' + req.hostname + req.url)
+    //}
 
     // Prevents IE and Chrome from MIME-sniffing a response. Reduces exposure to
     // drive-by download attacks on sites serving user uploaded content.
     res.header('X-Content-Type-Options', 'nosniff')
+    // limit to sites using this script
+    res.header('Access-Control-Allow-Origin', '*')
 
     // Prevent rendering of site within a frame.
     res.header('X-Frame-Options', 'DENY')
@@ -58,7 +59,7 @@ app.use('/api/mailer', mailer);
 // catch 404
 app.get('*', function (req, res) {
     res.status(404).render('error', {
-        title: '404 Page Not Found - astatic-api',
+        title: '404 Page Not Found - mailer-api',
         message: '404 Not Found',
         status: '404 Not Found',
         stack: ''
