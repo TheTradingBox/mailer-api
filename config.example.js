@@ -27,3 +27,8 @@ exports.poolConfig = {
         pass: 'password'
     }
 };
+
+exports.ssl = {
+    key: '/secret/private.pem',
+    certificate: '/secret/public.cert'
+}
