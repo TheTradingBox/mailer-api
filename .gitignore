@@ -1,4 +1,6 @@
-/secret/*
+/secret/*.cer
+/secret/*.csr
+/secret/*.key
 .idea
 /node_modules
 config.js

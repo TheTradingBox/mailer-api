@@ -43,12 +43,9 @@
   },
   "scripts": {
     "start": "node server",
-    "remote-keys": "npm run copy-deploy && npm run copy-deploy-pub",
     "remote-setup": "npm run copy-config && npm run copy-ssl",
     "copy-config": "scp -r config.js ubuntu@gdaydigitalnomads.com:/home/ubuntu/mailer-api/",
-    "copy-ssl": "scp -r ./secret/ ubuntu@gdaydigitalnomads.com:/home/ubuntu/mailer-api/secret",
-    "copy-deploy": "scp %deploy-key% ubuntu@api.gdaydigitalnomads.com:/home/ubuntu/.ssh/id_rsa",
-    "copy-deploy-pub": "scp %deploy-key%.pub ubuntu@api.gdaydigitalnomads.com:/home/ubuntu/.ssh/id_rsa.pub"
+    "copy-ssl": "scp -r ./secret/ ubuntu@gdaydigitalnomads.com:/home/ubuntu/mailer-api/secret"
   }
 }
 
