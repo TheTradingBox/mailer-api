@@ -44,8 +44,8 @@
   "scripts": {
     "start": "node server",
     "remote-setup": "npm run copy-config && npm run copy-ssl",
-    "copy-config": "scp -r config.js ubuntu@gdaydigitalnomads.com:/home/ubuntu/mailer-api/",
-    "copy-ssl": "scp -r ./secret/ ubuntu@gdaydigitalnomads.com:/home/ubuntu/mailer-api/secret"
+    "copy-config": "scp config.js ubuntu@api.gdaydigitalnomads.com:/home/ubuntu/mailer-api/",
+    "copy-ssl": "scp -r secret/* ubuntu@api.gdaydigitalnomads.com:/home/ubuntu/mailer-api/secret/"
   }
 }
 

@@ -22,16 +22,16 @@ var mailer = require('../routes/mailer');
 var config = require('../config')
 
 /**
- * Create HTTP & HTTPS server (if certs are available).
+ * Create HTTP server (use Nginx for https ssl).
  */
 
-var secret, secretKey, secretCert
-try {
-    secretKey = fs.readFileSync(path.join(__dirname, '..' + config.ssl.key))
-    secretCert = fs.readFileSync(path.join(__dirname, '..' + config.ssl.certificate))
-} catch (err) {
-    console.log(err.message + ' : No Certs supplied - no https server running.')
-}
+//var secret, secretKey, secretCert
+//try {
+//    secretKey = fs.readFileSync(path.join(__dirname, '..' + config.ssl.key))
+//    secretCert = fs.readFileSync(path.join(__dirname, '..' + config.ssl.certificate))
+//} catch (err) {
+//    console.log(err.message + ' : No Certs supplied - no https server running.')
+//}
 
 // Create the Express App
 
@@ -52,13 +52,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(compress())
 app.use(function (req, res, next) {
+
     // limit to sites using this script
     res.header('Access-Control-Allow-Origin', '*')
+
     // Force SSL
-    if (httpsServer && req.protocol !== 'https') {
-        console.log('Received http request - redirecting to https.')
-        return res.redirect('https://' + req.hostname + ':' + req.port + req.url)
-    }
+    //if (req.protocol !== 'https') {
+    //    console.log('Received http request - redirecting to https.')
+    //    return res.redirect('https://' + req.hostname + ':' + req.port + req.url)
+    //}
 
     // Prevents IE and Chrome from MIME-sniffing a response. Reduces exposure to
     // drive-by download attacks on sites serving user uploaded content.
@@ -109,21 +111,19 @@ app.use(function(err, req, res, next) {
         })
 });
 
+//if (secretKey && secretCert) {
+//    server = https.createServer({ key: secretKey, cert: secretCert }, app)
+//    port = config.ports.https
+//} else {
 var server = http.createServer(app)
-var httpsServer
-if (secretKey && secretCert) {
-    httpsServer = https.createServer({ key: secretKey, cert: secretCert }, app)
-}
+
+//}
 
 unlimited();
 
 server.on('error', onError);
 server.on('listening', onListening);
 
-if (httpsServer) {
-    httpsServer.on('error', onError);
-    httpsServer.on('listening', onHttpsListening);
-}
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -131,20 +131,14 @@ if (httpsServer) {
 
 var tasks = [
     function (cb) {
-        server.listen(config.ports.http, cb)
+        server.listen(config.port, 'localhost', cb)
     }
 ]
-
-if (httpsServer) {
-    tasks.push(function (cb) {
-        httpsServer.listen(config.ports.https, cb)
-    })
-}
 
 parallel(tasks, function (err) {
     if (err) throw err
     debug('In %s mode', config.env)
-    debug('listening on port %s', JSON.stringify(config.ports))
+    debug('Listening on port %s', config.port)
     downgrade()
 })
 
@@ -174,14 +168,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   console.log('In %s mode', process.env.NODE_ENV)
-  console.log('Http listening on ' + bind);
-}
-
-function onHttpsListening() {
-    var addr = httpsServer.address();
-    var bind = typeof addr === 'string'
-        ? 'pipe ' + addr
-        : 'port ' + addr.port;
-    console.log('In %s mode', process.env.NODE_ENV)
-    console.log('Https listening on ' + bind);
+  console.log('Listening on ' + bind);
 }

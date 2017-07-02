@@ -1,8 +1,6 @@
 // Port settings for dev and prod
-exports.ports = {
-  http: exports.isProd ? 80 : 9100,
-  https: exports.isProd ? 80 : 9100
-}
+exports.isProd = process.env.NODE_ENV === 'production'
+exports.ports = 9100
 
 // Google Site and Private keys for captcha
 exports.keys = {
@@ -15,7 +13,7 @@ exports.configs = {
     dev : {domain: 'local.example.com', toAddress: 'test@example.com', fromAddress: 'test@example.com', from: 'My Name'},
     production : { domain: 'www.example.com', toAddress: 'test@texample.com', fromAddress: 'test@example.com', from: 'My Name'}
 }
-exports.env = (process.env.NODE_ENV === 'production') ? exports.configs.production : exports.configs.dev
+exports.env = exports.isProd ? exports.configs.production : exports.configs.dev
 
 exports.poolConfig = {
     pool: true,
@@ -27,8 +25,3 @@ exports.poolConfig = {
         pass: 'password'
     }
 };
-
-exports.ssl = {
-    key: '/secret/private.pem',
-    certificate: '/secret/public.cert'
-}

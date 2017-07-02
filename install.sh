@@ -2,23 +2,29 @@
 
 sudo apt-get install nodejs
 sudo apt-get install build-essential
+sudo apt-get install nginx
 sudo npm install -g pm2
+sudo ufw allow 'Nginx HTTPS'
+echo 'export NODE_ENV="production"' >> /home/ubuntu/.bashrc
 
-# .bashrc - add 'export NODE_ENV="production"'
-# Copy over git deploy keys
-# Copy over mailer-api/config.js
-# Copy over SSL Cert and key
-# git clone git@github.com:GDayDigitalNomads/mailer-api.git
+# Copy git deploy keys
+sudo chmod 400 ~/.ssh/id_rsa
+git clone git@github.com:GDayDigitalNomads/mailer-api.git
+# locally run: npm run remote-setup
+# This will copy your adapted config file & any ssl keys / certs
 
+# Start Mailer API
 cd mailer-api
-sudo npm install -g
-sudo nom link
-pm2 start mailer
+npm install
+pm2 start mailer-api
 
+
+# Make sure PM2 is running at startup (follow the prompts)
 pm2 startup systemd
-# Follow the prompts
 
-sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 9101
+# Set up nginx
+
+
 
 
 
