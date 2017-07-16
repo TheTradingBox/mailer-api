@@ -10,7 +10,6 @@ var unlimited = require('unlimited')
 var path = require("path")
 var compress = require('compression')
 var express = require('express');
-var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var jade = require('jade')
@@ -19,7 +18,7 @@ var bodyParser = require('body-parser');
 var url = require('url')
 var index = require('../routes/index');
 var mailer = require('../routes/mailer');
-var config = require('../config')
+var config = require('../config');
 
 /**
  * Create HTTP server (use Nginx for https ssl).
@@ -147,7 +146,6 @@ parallel(tasks, function (err) {
 /**
  * Event listener for HTTP server "error" event.
  */
-
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
@@ -161,7 +159,6 @@ function onError(error) {
 /**
  * Event listener for HTTP server "listening" event.
  */
-
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
