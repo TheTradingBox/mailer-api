@@ -1,5 +1,6 @@
 # Mailer API
 
+
 A simple mailer api for static website forms. I created to enable secure newsletter and contact forms with my jekyll/github-pages website [G'Day Digital Nomads](https://www.gdaydigitalnomads.com).
 
 Integrates with Google Recaptcha.
